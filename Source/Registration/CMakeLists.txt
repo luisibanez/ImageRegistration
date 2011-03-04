@@ -1,0 +1,2 @@
+add_executable(ImageRegistration ImageRegistration.cxx)
+target_link_libraries(ImageRegistration ITKAlgorithms ITKIO)
