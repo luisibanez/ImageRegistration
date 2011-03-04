@@ -13,7 +13,13 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set(SimpleViewSrcs RenderWindowUI.cxx SimpleViewUI.cxx)
+set(SimpleViewSrcs
+  RenderWindowUI.cxx
+  SimpleViewUI.cxx
+  vtkKWImage.cxx
+  vtkKWImageIO.cxx
+)
+
 set(SimpleViewUI SimpleViewUI.ui)
 set(SimpleViewHeaders SimpleViewUI.h)
 
@@ -30,4 +36,4 @@ source_group("Generated" FILES
 )
 
 add_executable( RenderWindowUI ${SimpleViewSrcs} ${UISrcs} ${MOCSrcs})
-target_link_libraries( RenderWindowUI QVTK )
+target_link_libraries( RenderWindowUI QVTK ${ITK_LIBRARIES})

@@ -1,15 +1,35 @@
+/*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+
 #include "ui_SimpleViewUI.h"
 #include "SimpleViewUI.h"
+
 #include <QFileDialog>
 #include <vtkCamera.h>
+
+#include "vtkKWImage.h"
+#include "vtkKWImageIO.h"
 
 // Constructor
 SimpleView::SimpleView()
 {
   this->ui = new Ui_SimpleView;
   this->ui->setupUi(this);
-
-  reader = vtkSmartPointer<vtkXMLImageDataReader>::New();
 
   renderer = vtkSmartPointer<vtkRenderer>::New();
 
@@ -48,7 +68,7 @@ void SimpleView::slotLoadImage()
   fileDialog.setViewMode( QFileDialog::Detail );
 
   QStringList filters;
-  filters << "Image files (*.vti)";
+  filters << "Image files (*.*)";
 
   fileDialog.setFilters( filters );
   fileDialog.setLabelText( QFileDialog::LookIn,"Select Input");
@@ -59,16 +79,20 @@ void SimpleView::slotLoadImage()
 
   std::string inputFilename = listOfFiles[0].toStdString();
 
-  reader->SetFileName(inputFilename.c_str());
-  reader->Update();
+  vtkSmartPointer< vtkKWImageIO > kwreader = vtkSmartPointer< vtkKWImageIO >::New();
 
-  vtkImageData * image = reader->GetOutput();
+  kwreader->SetFileName( inputFilename );
+  kwreader->ReadImage();
 
-  planeWidget->SetInput( image );
+  vtkSmartPointer< vtkKWImage > kwimage = kwreader->HarvestReadImage();
+
+  vtkImageData * vtkimage = kwimage->GetVTKImage();
+
+  planeWidget->SetInput( vtkimage );
 
   int x0, x1, y0, y1, z0, z1;
 
-  image->GetExtent( x0, x1, y0, y1, z0, z1 );
+  vtkimage->GetExtent( x0, x1, y0, y1, z0, z1 );
 
   int middleSliceNumber = ( z1 + z0 ) / 2;
 

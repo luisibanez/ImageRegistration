@@ -42,7 +42,6 @@ private:
   Ui_SimpleView *ui;
 
 
-  vtkSmartPointer<vtkXMLImageDataReader> reader;
   vtkSmartPointer<vtkSphereSource> sphereSource;
   vtkSmartPointer<vtkPolyDataMapper> sphereMapper;
   vtkSmartPointer<vtkActor> sphereActor;
