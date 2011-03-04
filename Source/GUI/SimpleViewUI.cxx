@@ -104,6 +104,10 @@ void SimpleView::slotLoadImage()
   planeWidget->SetTexturePlaneProperty(property);
   planeWidget->On();
 
+  renderer->SetBackground(0.329,0.349,0.427);
+  renderer->SetBackground2(0.658,0.698,0.855);
+  renderer->GradientBackgroundOn();
+
   vtkCamera * camera = renderer->GetActiveCamera();
 
   camera->SetPosition ( 0.5, 0.5, -1 );
