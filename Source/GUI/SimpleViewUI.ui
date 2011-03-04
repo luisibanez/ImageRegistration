@@ -14,29 +14,18 @@
    <string>SimpleView</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QVTKWidget" name="qvtkWidget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>511</width>
-      <height>511</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>93</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load Image</string>
-    </property>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Load Image</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QVTKWidget" name="qvtkWidget" native="true"/>
+    </item>
+   </layout>
   </widget>
   <action name="actionOpenFile">
    <property name="enabled">
