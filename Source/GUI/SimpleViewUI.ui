@@ -16,12 +16,20 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="pushButton1">
       <property name="text">
-       <string>Load Image</string>
+       <string>Load Image 1</string>
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="pushButton2">
+      <property name="text">
+       <string>Load Image 2</string>
+      </property>
+     </widget>
+    </item>
+
     <item>
      <widget class="QVTKWidget" name="qvtkWidget" native="true"/>
     </item>

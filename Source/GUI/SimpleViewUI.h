@@ -30,9 +30,13 @@ public:
 public slots:
 
   virtual void slotExit();
-  virtual void slotLoadImage();
+
+  virtual void slotLoadImage1();
+  virtual void slotLoadImage2();
 
 protected:
+
+  std::string GetFileName();
 
 protected slots:
 
@@ -41,15 +45,15 @@ private:
   // Designer form
   Ui_SimpleView *ui;
 
-
-  vtkSmartPointer<vtkSphereSource> sphereSource;
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper;
-  vtkSmartPointer<vtkActor> sphereActor;
   vtkSmartPointer<vtkRenderer> renderer;
-  vtkSmartPointer<vtkImagePlaneWidget> planeWidget;
-  vtkSmartPointer< vtkCellPicker > picker;
-  vtkSmartPointer< vtkProperty > property;
 
+  vtkSmartPointer< vtkImagePlaneWidget> planeWidget1;
+  vtkSmartPointer< vtkCellPicker > picker1;
+  vtkSmartPointer< vtkProperty > property1;
+
+  vtkSmartPointer< vtkImagePlaneWidget> planeWidget2;
+  vtkSmartPointer< vtkCellPicker > picker2;
+  vtkSmartPointer< vtkProperty > property2;
 };
 
 #endif // SimpleViewUI_H
