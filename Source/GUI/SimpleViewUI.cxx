@@ -73,8 +73,9 @@ SimpleView::SimpleView()
 
   // Set up action signals and slots
   connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
-  connect(this->ui->pushButton1, SIGNAL(pressed()), this, SLOT(slotLoadImage1()));
-  connect(this->ui->pushButton2, SIGNAL(pressed()), this, SLOT(slotLoadImage2()));
+  connect(this->ui->actionQuit, SIGNAL(triggered()), this, SLOT(slotExit()));
+  connect(this->ui->actionImage1, SIGNAL(triggered()), this, SLOT(slotLoadImage1()));
+  connect(this->ui->actionImage2, SIGNAL(triggered()), this, SLOT(slotLoadImage2()));
 };
 
 void SimpleView::slotExit()
