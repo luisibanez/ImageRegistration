@@ -15,6 +15,7 @@ include_directories(
 
 set(SimpleViewSrcs
   RenderWindowUI.cxx
+  RegistrationMonitor.cxx
   SimpleViewUI.cxx
   vtkKWImage.cxx
   vtkKWImageIO.cxx

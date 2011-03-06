@@ -12,6 +12,7 @@
 #include <vtkImageData.h>
 #include <vtkCellPicker.h>
 #include <vtkProperty.h>
+#include <vtkActor.h>
 #include "vtkSmartPointer.h"
 
 
@@ -47,13 +48,17 @@ private:
 
   vtkSmartPointer<vtkRenderer> renderer;
 
-  vtkSmartPointer< vtkImagePlaneWidget> planeWidget1;
-  vtkSmartPointer< vtkCellPicker > picker1;
-  vtkSmartPointer< vtkProperty > property1;
+  vtkSmartPointer< vtkActor >            transform1to2;
 
-  vtkSmartPointer< vtkImagePlaneWidget> planeWidget2;
-  vtkSmartPointer< vtkCellPicker > picker2;
-  vtkSmartPointer< vtkProperty > property2;
+  vtkSmartPointer< vtkActor >             transform1;
+  vtkSmartPointer< vtkImagePlaneWidget>   planeWidget1;
+  vtkSmartPointer< vtkCellPicker >        picker1;
+  vtkSmartPointer< vtkProperty >          property1;
+
+  vtkSmartPointer< vtkActor >             transform2;
+  vtkSmartPointer< vtkImagePlaneWidget>   planeWidget2;
+  vtkSmartPointer< vtkCellPicker >        picker2;
+  vtkSmartPointer< vtkProperty >          property2;
 };
 
 #endif // SimpleViewUI_H

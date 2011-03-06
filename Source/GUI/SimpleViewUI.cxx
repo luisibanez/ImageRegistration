@@ -43,6 +43,9 @@ SimpleView::SimpleView()
   planeWidget1->SetInteractor( renderInteractor );
   planeWidget2->SetInteractor( renderInteractor );
 
+  transform1 = vtkSmartPointer< vtkActor >::New();
+  transform2 = vtkSmartPointer< vtkActor >::New();
+
   double origin[3] = {0,1,0};
 
   planeWidget1->SetOrigin(origin);
@@ -131,6 +134,7 @@ void SimpleView::slotLoadImage1()
   planeWidget1->RestrictPlaneToVolumeOn();
   planeWidget1->SetKeyPressActivationValue('z');
   planeWidget1->SetTexturePlaneProperty(property1);
+  planeWidget1->SetProp3D( transform1 );
   planeWidget1->On();
 
   vtkCamera * camera = renderer->GetActiveCamera();
@@ -168,6 +172,7 @@ void SimpleView::slotLoadImage2()
   planeWidget2->RestrictPlaneToVolumeOn();
   planeWidget2->SetKeyPressActivationValue('z');
   planeWidget2->SetTexturePlaneProperty(property2);
+  planeWidget2->SetProp3D( transform2 );
   planeWidget2->On();
 
   vtkCamera * camera = renderer->GetActiveCamera();
