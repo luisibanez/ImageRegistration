@@ -132,14 +132,6 @@ void SimpleView::slotLoadImage1()
   planeWidget1->SetTexturePlaneProperty(property1);
   planeWidget1->On();
 
-  planeWidget2->SetPlaneOrientationToZAxes();
-  planeWidget2->SetSlicePosition( middleSliceNumber );
-  planeWidget2->SetPicker(picker2);
-  planeWidget2->RestrictPlaneToVolumeOn();
-  planeWidget2->SetKeyPressActivationValue('z');
-  planeWidget2->SetTexturePlaneProperty(property2);
-  planeWidget2->On();
-
   vtkCamera * camera = renderer->GetActiveCamera();
 
   camera->SetPosition ( 0.5, 0.5, -1 );
@@ -159,23 +151,15 @@ void SimpleView::slotLoadImage2()
 
   vtkSmartPointer< vtkKWImage > kwimage = kwreader->HarvestReadImage();
 
-  vtkImageData * vtkimage1 = kwimage->GetVTKImage();
+  vtkImageData * vtkimage2 = kwimage->GetVTKImage();
 
-  planeWidget1->SetInput( vtkimage1 );
+  planeWidget2->SetInput( vtkimage2 );
 
   int x0, x1, y0, y1, z0, z1;
 
-  vtkimage1->GetExtent( x0, x1, y0, y1, z0, z1 );
+  vtkimage2->GetExtent( x0, x1, y0, y1, z0, z1 );
 
   int middleSliceNumber = ( z1 + z0 ) / 2;
-
-  planeWidget1->SetPlaneOrientationToZAxes();
-  planeWidget1->SetSlicePosition( middleSliceNumber );
-  planeWidget1->SetPicker(picker1);
-  planeWidget1->RestrictPlaneToVolumeOn();
-  planeWidget1->SetKeyPressActivationValue('z');
-  planeWidget1->SetTexturePlaneProperty(property1);
-  planeWidget1->On();
 
   planeWidget2->SetPlaneOrientationToZAxes();
   planeWidget2->SetSlicePosition( middleSliceNumber );
