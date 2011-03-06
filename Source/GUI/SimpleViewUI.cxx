@@ -21,6 +21,7 @@
 
 #include <QFileDialog>
 #include <vtkCamera.h>
+#include <vtkMatrix4x4.h>
 
 #include "vtkKWImage.h"
 #include "vtkKWImageIO.h"
@@ -43,8 +44,8 @@ SimpleView::SimpleView()
   planeWidget1->SetInteractor( renderInteractor );
   planeWidget2->SetInteractor( renderInteractor );
 
-  transform1 = vtkSmartPointer< vtkActor >::New();
-  transform2 = vtkSmartPointer< vtkActor >::New();
+  actor1 = vtkSmartPointer< vtkActor >::New();
+  actor2 = vtkSmartPointer< vtkActor >::New();
 
   double origin[3] = {0,1,0};
 
@@ -120,6 +121,8 @@ void SimpleView::slotLoadImage1()
 
   vtkImageData * vtkimage1 = kwimage->GetVTKImage();
 
+  const vtkKWImage::ImageBaseType * itkimage1 = kwimage->GetITKImageBase();
+
   planeWidget1->SetInput( vtkimage1 );
 
   int x0, x1, y0, y1, z0, z1;
@@ -128,13 +131,32 @@ void SimpleView::slotLoadImage1()
 
   int middleSliceNumber = ( z1 + z0 ) / 2;
 
+  vtkSmartPointer< vtkMatrix4x4 >  transformMatrix1 = vtkSmartPointer< vtkMatrix4x4 >::New();
+
+  itk::ImageBase<3>::PointType       origin    = itkimage1->GetOrigin();
+  itk::ImageBase<3>::DirectionType   direction = itkimage1->GetDirection();
+
+  // VTK already takes image spacing into account, so here we only need to take
+  // care of direction and origin.
+
+  for(unsigned int i=0; i<3; i++ )
+    {
+    for(unsigned int j=0; j<3; j++ )
+      {
+      transformMatrix1->SetElement(i,j, direction(i,j) );
+      }
+
+//    transformMatrix1->SetElement( i, 3, origin[i]);
+    }
+
+  actor1->SetUserMatrix( transformMatrix1 );
   planeWidget1->SetPlaneOrientationToZAxes();
   planeWidget1->SetSlicePosition( middleSliceNumber );
   planeWidget1->SetPicker(picker1);
   planeWidget1->RestrictPlaneToVolumeOn();
   planeWidget1->SetKeyPressActivationValue('z');
   planeWidget1->SetTexturePlaneProperty(property1);
-  planeWidget1->SetProp3D( transform1 );
+  planeWidget1->SetProp3D( actor1 );
   planeWidget1->On();
 
   vtkCamera * camera = renderer->GetActiveCamera();
@@ -158,6 +180,8 @@ void SimpleView::slotLoadImage2()
 
   vtkImageData * vtkimage2 = kwimage->GetVTKImage();
 
+  const vtkKWImage::ImageBaseType * itkimage2 = kwimage->GetITKImageBase();
+
   planeWidget2->SetInput( vtkimage2 );
 
   int x0, x1, y0, y1, z0, z1;
@@ -166,13 +190,32 @@ void SimpleView::slotLoadImage2()
 
   int middleSliceNumber = ( z1 + z0 ) / 2;
 
+  vtkSmartPointer< vtkMatrix4x4 >  transformMatrix2 = vtkSmartPointer< vtkMatrix4x4 >::New();
+
+  itk::ImageBase<3>::PointType       origin    = itkimage2->GetOrigin();
+  itk::ImageBase<3>::DirectionType   direction = itkimage2->GetDirection();
+
+  // VTK already takes image spacing into account, so here we only need to take
+  // care of direction and origin.
+
+  for(unsigned int i=0; i<3; i++ )
+    {
+    for(unsigned int j=0; j<3; j++ )
+      {
+      transformMatrix2->SetElement(i,j, direction(i,j) );
+      }
+
+  //  transformMatrix2->SetElement( i, 3, origin[i]);
+    }
+
+  actor2->SetUserMatrix( transformMatrix2 );
   planeWidget2->SetPlaneOrientationToZAxes();
   planeWidget2->SetSlicePosition( middleSliceNumber );
   planeWidget2->SetPicker(picker2);
   planeWidget2->RestrictPlaneToVolumeOn();
   planeWidget2->SetKeyPressActivationValue('z');
   planeWidget2->SetTexturePlaneProperty(property2);
-  planeWidget2->SetProp3D( transform2 );
+  planeWidget2->SetProp3D( actor2 );
   planeWidget2->On();
 
   vtkCamera * camera = renderer->GetActiveCamera();

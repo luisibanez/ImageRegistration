@@ -50,12 +50,12 @@ private:
 
   vtkSmartPointer< vtkActor >            transform1to2;
 
-  vtkSmartPointer< vtkActor >             transform1;
+  vtkSmartPointer< vtkActor >             actor1;
   vtkSmartPointer< vtkImagePlaneWidget>   planeWidget1;
   vtkSmartPointer< vtkCellPicker >        picker1;
   vtkSmartPointer< vtkProperty >          property1;
 
-  vtkSmartPointer< vtkActor >             transform2;
+  vtkSmartPointer< vtkActor >             actor2;
   vtkSmartPointer< vtkImagePlaneWidget>   planeWidget2;
   vtkSmartPointer< vtkCellPicker >        picker2;
   vtkSmartPointer< vtkProperty >          property2;
