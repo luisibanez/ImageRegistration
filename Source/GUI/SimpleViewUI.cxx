@@ -22,6 +22,7 @@
 #include <QFileDialog>
 #include <vtkCamera.h>
 #include <vtkMatrix4x4.h>
+#include <vtkImageChangeInformation.h>
 
 #include "vtkKWImage.h"
 #include "vtkKWImageIO.h"
@@ -119,7 +120,24 @@ void SimpleView::slotLoadImage1()
 
   vtkSmartPointer< vtkKWImage > kwimage = kwreader->HarvestReadImage();
 
-  vtkImageData * vtkimage1 = kwimage->GetVTKImage();
+  // We need to manage image origin in the Actor that holds the ImagePlane.
+  // So, here, were remove the origin information from the VTK image, and let
+  // the Actor grab that information later directly from the input ITK image.
+  vtkSmartPointer< vtkImageChangeInformation > changeInformation =
+    vtkSmartPointer< vtkImageChangeInformation >::New();
+
+  changeInformation->SetInput( kwimage->GetVTKImage() );
+
+  double nullorigin[3];
+  nullorigin[0] = 0.0;
+  nullorigin[1] = 0.0;
+  nullorigin[2] = 0.0;
+
+  changeInformation->SetOutputOrigin( nullorigin );
+
+  changeInformation->Update();
+
+  vtkImageData * vtkimage1 = changeInformation->GetOutput();
 
   const vtkKWImage::ImageBaseType * itkimage1 = kwimage->GetITKImageBase();
 
@@ -146,8 +164,10 @@ void SimpleView::slotLoadImage1()
       transformMatrix1->SetElement(i,j, direction(i,j) );
       }
 
-//    transformMatrix1->SetElement( i, 3, origin[i]);
+    transformMatrix1->SetElement( i, 3, origin[i]);
     }
+
+  transformMatrix1->Print( std::cout );
 
   actor1->SetUserMatrix( transformMatrix1 );
   planeWidget1->SetPlaneOrientationToZAxes();
@@ -178,7 +198,24 @@ void SimpleView::slotLoadImage2()
 
   vtkSmartPointer< vtkKWImage > kwimage = kwreader->HarvestReadImage();
 
-  vtkImageData * vtkimage2 = kwimage->GetVTKImage();
+  // We need to manage image origin in the Actor that holds the ImagePlane.
+  // So, here, were remove the origin information from the VTK image, and let
+  // the Actor grab that information later directly from the input ITK image.
+  vtkSmartPointer< vtkImageChangeInformation > changeInformation =
+    vtkSmartPointer< vtkImageChangeInformation >::New();
+
+  changeInformation->SetInput( kwimage->GetVTKImage() );
+
+  double nullorigin[3];
+  nullorigin[0] = 0.0;
+  nullorigin[1] = 0.0;
+  nullorigin[2] = 0.0;
+
+  changeInformation->SetOutputOrigin( nullorigin );
+
+  changeInformation->Update();
+
+  vtkImageData * vtkimage2 = changeInformation->GetOutput();
 
   const vtkKWImage::ImageBaseType * itkimage2 = kwimage->GetITKImageBase();
 
@@ -205,8 +242,10 @@ void SimpleView::slotLoadImage2()
       transformMatrix2->SetElement(i,j, direction(i,j) );
       }
 
-  //  transformMatrix2->SetElement( i, 3, origin[i]);
+    transformMatrix2->SetElement( i, 3, origin[i]);
     }
+
+  transformMatrix2->Print( std::cout );
 
   actor2->SetUserMatrix( transformMatrix2 );
   planeWidget2->SetPlaneOrientationToZAxes();
